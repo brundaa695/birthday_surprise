@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Birthday Surprise</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: black;
+    overflow: hidden;
+    color: white;
+    text-align: center;
+}
+
+/* Start Screen */
+.start-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    background: #ff4e50;
+    color: white;
+    cursor: pointer;
+}
+
+/* Card */
+.card {
+    display: none;
+    margin-top: 50px;
+}
+
+/* Emoji Slideshow */
+#emoji {
+    font-size: 80px;
+    margin-top: 20px;
+}
+
+/* Typing */
+#message {
+    font-size: 1.5em;
+    margin-top: 20px;
+    color: #ffccd5;
+}
+
+/* Cake */
+.cake {
+    font-size: 60px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+/* Hearts */
+.heart {
+    position: absolute;
+    color: red;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Fireworks */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<!-- Start -->
+<div class="start-screen" id="start">
+    <h2>🎁 Tap to Open Surprise 🎁</h2>
+    <button onclick="startSurprise()">Open</button>
+</div>
+
+<!-- Card -->
+<div class="card" id="card">
+
+    <!-- Emoji Animation -->
+    <div id="emoji">🎂</div>
+
+    <!-- Message -->
+    <div id="message"></div>
+
+    <!-- Cake -->
+    <div class="cake" onclick="cutCake()">🎂</div>
+
+</div>
+
+<!-- Music -->
+<audio id="music" src="https://www.bensound.com/bensound-music/bensound-happyrock.mp3"></audio>
+
+<script>
+// Start
+function startSurprise() {
+    document.getElementById("start").style.display = "none";
+    document.getElementById("card").style.display = "block";
+    document.getElementById("music").play();
+    typeText();
+    startEmoji();
+    startHearts();
+}
+
+// Typing
+const text = "🎉 Happy Birthday Gayamma ❤️\nMay your future be brighter and stronger ahead 😘";
+let i = 0;
+
+function typeText() {
+    if (i < text.length) {
+        document.getElementById("message").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeText, 50);
+    }
+}
+
+// Emoji Slideshow
+const emojis = ["🎂","🎉","🎁","💖","🥳","🎈"];
+let e = 0;
+
+function startEmoji() {
+    setInterval(() => {
+        e = (e + 1) % emojis.length;
+        document.getElementById("emoji").innerHTML = emojis[e];
+    }, 1000);
+}
+
+// Cake
+function cutCake() {
+    alert("🎉 Cake Cut! Happy Birthday 🎂");
+}
+
+// Hearts
+function startHearts() {
+    setInterval(() => {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }, 300);
+}
+
+// Fireworks
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function firework() {
+    let x = Math.random() * canvas.width;
+    let y = Math.random() * canvas.height / 2;
+
+    for (let i = 0; i < 50; i++) {
+        ctx.beginPath();
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = "hsl(" + Math.random()*360 + ",100%,50%)";
+        ctx.fill();
+    }
+}
+
+setInterval(firework, 500);
+</script>
+
+</body>
+</html>
