@@ -14,7 +14,6 @@ body {
     text-align: center;
 }
 
-/* Start Screen */
 .start-screen {
     position: absolute;
     width: 100%;
@@ -36,23 +35,27 @@ button {
     cursor: pointer;
 }
 
-/* Card */
 .card {
     display: none;
     margin-top: 50px;
 }
 
-/* Emoji Slideshow */
-#emoji {
-    font-size: 80px;
-    margin-top: 20px;
-}
-
-/* Typing */
 #message {
     font-size: 1.5em;
     margin-top: 20px;
     color: #ffccd5;
+}
+
+/* Photos */
+#photos {
+    display: none;
+    margin-top: 20px;
+}
+
+#photos img {
+    width: 220px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px pink;
 }
 
 /* Cake */
@@ -74,7 +77,6 @@ button {
     100% { transform: translateY(-10vh); opacity: 0; }
 }
 
-/* Fireworks */
 canvas {
     position: absolute;
     top: 0;
@@ -87,27 +89,24 @@ canvas {
 
 <canvas id="fireworks"></canvas>
 
-<!-- Start -->
 <div class="start-screen" id="start">
     <h2>🎁 Tap to Open Surprise 🎁</h2>
     <button onclick="startSurprise()">Open</button>
 </div>
 
-<!-- Card -->
 <div class="card" id="card">
 
-    <!-- Emoji Animation -->
-    <div id="emoji">🎂</div>
-
-    <!-- Message -->
     <div id="message"></div>
 
-    <!-- Cake -->
+    <!-- Photos -->
+    <div id="photos">
+        <img id="slide" src="IMG-20260402-WA0041.jpg">
+    </div>
+
     <div class="cake" onclick="cutCake()">🎂</div>
 
 </div>
 
-<!-- Music -->
 <audio id="music" src="https://www.bensound.com/bensound-music/bensound-happyrock.mp3"></audio>
 
 <script>
@@ -117,7 +116,6 @@ function startSurprise() {
     document.getElementById("card").style.display = "block";
     document.getElementById("music").play();
     typeText();
-    startEmoji();
     startHearts();
 }
 
@@ -130,18 +128,26 @@ function typeText() {
         document.getElementById("message").innerHTML += text.charAt(i);
         i++;
         setTimeout(typeText, 50);
+    } else {
+        document.getElementById("photos").style.display = "block";
+        startSlideshow();
     }
 }
 
-// Emoji Slideshow
-const emojis = ["🎂","🎉","🎁","💖","🥳","🎈"];
-let e = 0;
+// Slideshow
+const images = [
+"IMG-20260402-WA0041.jpg",
+"IMG-20260405-WA0009.jpg",
+"IMG-20260405-WA0010.jpg"
+];
 
-function startEmoji() {
+let index = 0;
+
+function startSlideshow() {
     setInterval(() => {
-        e = (e + 1) % emojis.length;
-        document.getElementById("emoji").innerHTML = emojis[e];
-    }, 1000);
+        index = (index + 1) % images.length;
+        document.getElementById("slide").src = images[index];
+    }, 2000);
 }
 
 // Cake
